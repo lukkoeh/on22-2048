@@ -34,7 +34,7 @@ public class Tile {
 
 
     public String toString(){
-        return "" + val;
+        return Integer.toString(val);
     }
 
     int calcHue(int value){
@@ -42,16 +42,16 @@ public class Tile {
         if (value < 64)
             return round(hueModifier);
         else
-            return round(48-hueModifier);
+            return round(96-hueModifier);
     }
 
     float calcSat(int value){
-        float satModifier = value/10.24f;
+        float satModifier = value/20.48f;
         return satModifier/100;
     }
 
     float calcLight(int value){
-        float lightModifier = value/25.6f;
+        float lightModifier = value/51.2f;
         return 1-(lightModifier/100);
     }
     int round(double value){
