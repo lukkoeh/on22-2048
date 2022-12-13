@@ -39,6 +39,7 @@ public class Game extends Application {
         mainscene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.W) {
                 System.out.println("up");
+                up();
             }
             else if (e.getCode() == KeyCode.A) {
                 System.out.println("left");
@@ -57,7 +58,45 @@ public class Game extends Application {
     public static void main(String[] args) {
         launch(args); //Launch the app
     }
-
+    int wall = 0;
+    public void up() {
+        wall = board.length - 1;
+        for (int x = 0; x <= 3; x++) {
+            for (int y = 0; y <= 3; y++) {
+                if (board[x][y].getVal() != 0) {
+                    if (wall >= y) {
+                        moveVertical(x, y, true);
+                    }
+                }
+            }
+        }
+    }
+    int score = 0;
+    public void moveVertical(int x, int y, boolean up) {
+        Tile original = board[x][wall];
+        Tile test = board[x][y];
+            if (original.getVal() == 0 || original.getVal() == test.getVal()) {
+                if (y > wall || (up == false) && y < wall){
+                    int sum = original.getVal() + test.getVal();
+                    if (original.getVal() != 0) {
+                            score += sum;
+                    }
+                    original.setVal(sum);
+                    test.setVal(0);
+                }
+            }
+            else
+            {
+                if (up == false){
+                    wall--;
+                }
+                else {
+                    wall++;
+                }
+                moveVertical(x, y, up);
+            }
+                updateGuiTiles();
+            }
     public void updateScore(int score) {
         Label lbl = (Label) root.lookup("#score");
         lbl.setText("SCORE: " + score);
