@@ -9,8 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -57,6 +57,4 @@ public class Game extends Application {
         Label lbl = (Label) root.lookup("#x" + x + "y" + y);
         lbl.setText(Integer.toString(value));
     }
-
-
 }
