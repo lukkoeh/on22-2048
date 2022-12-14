@@ -30,8 +30,11 @@ public class Game extends Application {
 
             }
         }
-        randomTile(false);
-        randomTile(false);
+
+        randomTile(true);
+        randomTile(true);
+
+
         updateGuiTiles();
         mainscene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.W) {
@@ -41,12 +44,15 @@ public class Game extends Application {
             }
             else if (e.getCode() == KeyCode.A) {
                 System.out.println("left");
+                moveLeft();
             }
             else if (e.getCode() == KeyCode.S) {
                 System.out.println("down");
+                moveDown();
             }
             else if (e.getCode() == KeyCode.D) {
                 System.out.println("right");
+                moveRight();
             }
         });
         primaryStage.setScene(mainscene);
@@ -57,6 +63,44 @@ public class Game extends Application {
         launch(args); //Launch the app
     }
 
+
+
+    public void mergeHorizontal(int col, boolean left) {
+        if (left) {
+            for (int x = 0; x < 3; x++) {
+                if (board[x][col].getVal() == board[x + 1][col].getVal()) {
+                    board[x][col].setVal(board[x][col].getVal() * 2);
+                    board[x + 1][col].setVal(0);
+                }
+            }
+        } else {
+            for (int x = 0; x < 3; x++) {
+                if (board[x][col].getVal() == board[x + 1][col].getVal()) {
+                    board[x+1][col].setVal(board[x][col].getVal() * 2);
+                    board[x][col].setVal(0);
+                }
+            }
+
+        }
+    }
+    public void mergeVertical(int row, boolean down) {
+        if (down) {
+            for (int y = 0; y < 3; y++) {
+                if (board[row][y].getVal() == board[row][y+1].getVal()) {
+                    board[row][y+1].setVal(board[row][y].getVal() * 2);
+                    board[row][y].setVal(0);
+                }
+            }
+        } else {
+            for (int y = 0; y < 3; y++) {
+                if (board[row][y].getVal() == board[row][y+1].getVal()) {
+                    board[row][y].setVal(board[row][y].getVal() * 2);
+                    board[row][y+1].setVal(0);
+                }
+            }
+
+        }
+    }
     public void moveUp() {
         boolean moved = false;
 
@@ -67,12 +111,11 @@ public class Game extends Application {
                 if (board[x][y].getVal()!=0 && board[x][y-1].getVal()==0){  //Nicht 0, y-Nachbar 0
                     board[x][y-1].setVal(board[x][y].getVal());
                     board[x][y].setVal(0);
-                    y=3;
+                    y=4;
                     moved=true;
                 }
                 else if((!combined) && board[x][y].getVal()!=0 && board[x][y-1].getVal() == board[x][y].getVal()){  //Nicht 0, y-Nachbar gleich aktuelles Tile
-                    board[x][y-1].setVal(board[x][y].getVal()*2);
-                    board[x][y].setVal(0);
+                    mergeVertical(x, false);
                     moved = true;
                     combined = true;
                 }
@@ -86,6 +129,88 @@ public class Game extends Application {
 
         updateGuiTiles();
 
+    }
+
+    public void moveDown(){
+        boolean moved = false;
+
+        for (int x = 0; x < 4; x++){
+            boolean combined = false;
+            for (int y = 2; y >=0; y--){
+
+                if (board[x][y].getVal()!=0 && board[x][y+1].getVal()==0){  //Nicht 0, y-Nachbar 0
+                    board[x][y+1].setVal(board[x][y].getVal());
+                    board[x][y].setVal(0);
+                    y=3;
+                    moved=true;
+                }
+                else if((!combined) && board[x][y].getVal()!=0 && board[x][y+1].getVal() == board[x][y].getVal()){  //Nicht 0, y-Nachbar gleich aktuelles Tile
+                    mergeVertical(x, true);
+                    moved = true;
+                    combined = true;
+                }
+
+            }
+
+        }
+        if(moved){
+            randomTile(false);
+        }
+
+        updateGuiTiles();
+    }
+
+
+
+    public void moveLeft(){
+        boolean moved = false;
+
+        for (int y = 0; y < 4; y++){
+            boolean combined = false;
+            for (int x = 1; x <= 3; x++){
+
+                if (board[x][y].getVal()!=0 && board[x-1][y].getVal()==0){  //Nicht 0, y-Nachbar 0
+                    board[x-1][y].setVal(board[x][y].getVal());
+                    board[x][y].setVal(0);
+                    x=0;
+                    moved=true;
+                }
+                else if((!combined) && board[x][y].getVal()!=0 && board[x-1][y].getVal() == board[x][y].getVal()){  //Nicht 0, y-Nachbar gleich aktuelles Tile
+                    mergeHorizontal(y, true);
+                    moved = true;
+                    combined = true;
+                }
+            }
+        }
+        if(moved){
+            randomTile(false);
+        }
+        updateGuiTiles();
+    }
+    public void moveRight(){
+        boolean moved = false;
+
+        for (int y = 0; y < 4; y++){
+            boolean combined = false;
+            for (int x = 0; x <= 2; x++){
+
+                if (board[x][y].getVal()!=0 && board[x+1][y].getVal()==0){  //Nicht 0, y-Nachbar 0
+                    board[x+1][y].setVal(board[x][y].getVal());
+                    board[x][y].setVal(0);
+                    x=-1;
+                    moved=true;
+                }
+                else if((!combined) && board[x][y].getVal()!=0 && board[x+1][y].getVal() == board[x][y].getVal()){  //Nicht 0, y-Nachbar gleich aktuelles Tile
+                    mergeHorizontal(y, false);
+                    moved = true;
+                    combined = true;
+                }
+            }
+        }
+        if(moved){
+            randomTile(false);
+        }
+        updateGuiTiles();
     }
     public void updateScore(int score) {
         Label lbl = (Label) root.lookup("#score");
@@ -105,6 +230,7 @@ public class Game extends Application {
                 board[x][y].setVal((r.nextInt(1) + 1) * 2);
             }
         }else{
+
             randomTile(initial);
         }
     }
