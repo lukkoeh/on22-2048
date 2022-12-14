@@ -1,26 +1,23 @@
 package dhbw.on22;
 
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.security.Key;
 import java.util.*;
 
 public class Game extends Application {
 
     private Parent root;
     Tile[][] board = new Tile[4][4];
+
+    int score = 0;
     @Override
     public void start(Stage primaryStage) throws IOException {
         primaryStage.setTitle("2048 Game");
@@ -33,13 +30,14 @@ public class Game extends Application {
 
             }
         }
-        randomTile(true);
-        randomTile(true);
+        randomTile(false);
+        randomTile(false);
         updateGuiTiles();
         mainscene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.W) {
                 System.out.println("up");
-                up();
+                moveUp();
+
             }
             else if (e.getCode() == KeyCode.A) {
                 System.out.println("left");
@@ -58,61 +56,56 @@ public class Game extends Application {
     public static void main(String[] args) {
         launch(args); //Launch the app
     }
-    int wall = 0;
-    public void up() {
-        wall = board.length - 1;
-        for (int x = 0; x <= 3; x++) {
-            for (int y = 0; y <= 3; y++) {
-                if (board[x][y].getVal() != 0) {
-                    if (wall >= y) {
-                        moveVertical(x, y, true);
-                    }
+
+    public void moveUp() {
+        boolean moved = false;
+
+        for (int x = 0; x < 4; x++){
+            boolean combined = false;
+            for (int y = 3; y > 0; y--){
+
+                if (board[x][y].getVal()!=0 && board[x][y-1].getVal()==0){  //Nicht 0, y-Nachbar 0
+                    board[x][y-1].setVal(board[x][y].getVal());
+                    board[x][y].setVal(0);
+                    y=3;
+                    moved=true;
                 }
+                else if((!combined) && board[x][y].getVal()!=0 && board[x][y-1].getVal() == board[x][y].getVal()){  //Nicht 0, y-Nachbar gleich aktuelles Tile
+                    board[x][y-1].setVal(board[x][y].getVal()*2);
+                    board[x][y].setVal(0);
+                    moved = true;
+                    combined = true;
+                }
+
             }
+
         }
+        if(moved){
+            randomTile(false);
+        }
+
+        updateGuiTiles();
+
     }
-    int score = 0;
-    public void moveVertical(int x, int y, boolean up) {
-        Tile original = board[x][wall];
-        Tile test = board[x][y];
-            if (original.getVal() == 0 || original.getVal() == test.getVal()) {
-                if (y > wall || (up == false) && y < wall){
-                    int sum = original.getVal() + test.getVal();
-                    if (original.getVal() != 0) {
-                            score += sum;
-                    }
-                    original.setVal(sum);
-                    test.setVal(0);
-                }
-            }
-            else
-            {
-                if (up == false){
-                    wall--;
-                }
-                else {
-                    wall++;
-                }
-                moveVertical(x, y, up);
-            }
-                updateGuiTiles();
-            }
     public void updateScore(int score) {
         Label lbl = (Label) root.lookup("#score");
         lbl.setText("SCORE: " + score);
     }
-    public void randomTile(boolean two){
+
+    public void randomTile(boolean initial){
+
         Random r = new Random();
-        int x = r.nextInt(3);
-        int y = r.nextInt(3);
+        int x = r.nextInt(4);
+        int y = r.nextInt(4);
+
         if (board[x][y].getVal() == 0 ){
-            if(two) {
+            if(initial) {
                 board[x][y].setVal(2);
             }else{
-                board[x][y].setVal((r.nextInt(1)+1)*2);
+                board[x][y].setVal((r.nextInt(1) + 1) * 2);
             }
         }else{
-            randomTile(two);
+            randomTile(initial);
         }
     }
     public void updateGuiTiles() {
@@ -124,6 +117,5 @@ public class Game extends Application {
 
             }
         }
-
     }
 }
