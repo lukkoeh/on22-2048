@@ -1,9 +1,13 @@
 package dhbw.on22;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
@@ -30,11 +34,7 @@ public class Game extends Application {
 
             }
         }
-
-        randomTile(true);
-        randomTile(true);
-
-
+        restartGame();
         updateGuiTiles();
         mainscene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.W) {
@@ -63,8 +63,42 @@ public class Game extends Application {
         launch(args); //Launch the app
     }
 
+    public void showDialog(boolean won) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        if(won) {
+            alert.setTitle("GEWONNEN");
+            alert.setHeaderText("Du hast gewonnen, erneut spielen?");
+        }
+        else {
+            alert.setTitle("VERLOREN");
+            alert.setHeaderText("Du hast verloren, willst du es erneut versuchen?");
+        }
+        ButtonType buttonretry = new ButtonType("Erneut spielen", ButtonBar.ButtonData.OK_DONE);
+        ButtonType buttoncancel = new ButtonType("Spiel beenden", ButtonBar.ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(buttonretry, buttoncancel);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == buttonretry) {
+            restartGame();
+            //clear board and create two new tiles
+        }
+        else {
+            Platform.exit();
+        }
+    }
 
+    private void restartGame() {
+        clearTiles();
+        randomTile(true);
+        randomTile(true);
+    }
 
+    public void clearTiles() {
+        for (int x = 0; x<4; x++) {
+            for (int y = 0; y<4; y++) {
+                board[x][y].setVal(0);
+            }
+        }
+    }
     public void mergeHorizontal(int col, boolean left) {
         if (left) {
             for (int x = 0; x < 3; x++) {
