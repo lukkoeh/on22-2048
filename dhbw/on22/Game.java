@@ -31,12 +31,9 @@ public class Game extends Application {
             }
         }
 
-        //randomTile(true);
-        //randomTile(true);
-        board[0][0].setVal(8);
-        board[0][1].setVal(8);
-        board[0][2].setVal(128);
-        board[0][3].setVal(8);
+        randomTile(true);
+        randomTile(true);
+
 
         updateGuiTiles();
         mainscene.setOnKeyPressed(e -> {
