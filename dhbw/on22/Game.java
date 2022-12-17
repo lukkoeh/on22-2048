@@ -31,8 +31,8 @@ public class Game extends Application {
             }
         }
 
-        randomTile(true);
-        randomTile(true);
+        randomTile();
+        randomTile();
 
 
         updateGuiTiles();
@@ -128,7 +128,7 @@ public class Game extends Application {
 
         }
         if(moved){
-            randomTile(false);
+            randomTile();
         }
 
         updateGuiTiles();
@@ -159,7 +159,7 @@ public class Game extends Application {
 
         }
         if(moved){
-            randomTile(false);
+            randomTile();
         }
 
         updateGuiTiles();
@@ -182,13 +182,14 @@ public class Game extends Application {
                 }
                 else if((!combined) && board[x][y].getVal()!=0 && board[x-1][y].getVal() == board[x][y].getVal()){  //Nicht 0, y-Nachbar gleich aktuelles Tile
                     mergeHorizontal(x,y, true);
+                    x=0;
                     moved = true;
                     combined = true;
                 }
             }
         }
         if(moved){
-            randomTile(false);
+            randomTile();
         }
         updateGuiTiles();
     }
@@ -207,14 +208,14 @@ public class Game extends Application {
                 }
                 else if((!combined) && board[x][y].getVal()!=0 && board[x+1][y].getVal() == board[x][y].getVal()){  //Nicht 0, y-Nachbar gleich aktuelles Tile
                     mergeHorizontal(x, y, false);
-
+                    x=-1;
                     moved = true;
                     combined = true;
                 }
             }
         }
         if(moved){
-            randomTile(false);
+            randomTile();
         }
         updateGuiTiles();
     }
@@ -223,21 +224,19 @@ public class Game extends Application {
         lbl.setText("SCORE: " + score);
     }
 
-    public void randomTile(boolean initial){
+    public void randomTile(){
 
         Random r = new Random();
         int x = r.nextInt(4);
         int y = r.nextInt(4);
 
         if (board[x][y].getVal() == 0 ){
-            if(initial) {
-                board[x][y].setVal(2);
-            }else{
-                board[x][y].setVal((r.nextInt(1) + 1) * 2);
-            }
+
+                board[x][y].setVal((r.nextInt(2) + 1) * 2);
+
         }else{
 
-            randomTile(initial);
+            randomTile();
         }
     }
     public void updateGuiTiles() {
