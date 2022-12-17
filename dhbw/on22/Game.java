@@ -31,27 +31,30 @@ public class Game extends Application {
             }
         }
 
-        randomTile(true);
-        randomTile(true);
-
+        //randomTile(true);
+        //randomTile(true);
+        board[0][0].setVal(8);
+        board[0][1].setVal(8);
+        board[0][2].setVal(128);
+        board[0][3].setVal(8);
 
         updateGuiTiles();
         mainscene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.W) {
-                System.out.println("up");
+
                 moveUp();
 
             }
             else if (e.getCode() == KeyCode.A) {
-                System.out.println("left");
+
                 moveLeft();
             }
             else if (e.getCode() == KeyCode.S) {
-                System.out.println("down");
+
                 moveDown();
             }
             else if (e.getCode() == KeyCode.D) {
-                System.out.println("right");
+
                 moveRight();
             }
         });
@@ -65,57 +68,61 @@ public class Game extends Application {
 
 
 
-    public void mergeHorizontal(int col, boolean left) {
+    public void mergeHorizontal(int col, int row, boolean left) {
         if (left) {
-            for (int x = 0; x < 3; x++) {
-                if (board[x][col].getVal() == board[x + 1][col].getVal()) {
-                    board[x][col].setVal(board[x][col].getVal() * 2);
-                    board[x + 1][col].setVal(0);
+            for (int x = 0; x < col; x++) {
+                if (board[col][row].getVal() == board[x][row].getVal() &&  board[col][row].getVal() == board[x+1][row].getVal()) {
+                    board[x][row].setVal(board[x][row].getVal() * 2);
+                    board[col][row].setVal(0);
+
                 }
             }
         } else {
-            for (int x = 0; x < 3; x++) {
-                if (board[x][col].getVal() == board[x + 1][col].getVal()) {
-                    board[x+1][col].setVal(board[x][col].getVal() * 2);
-                    board[x][col].setVal(0);
+            for (int x = 3; x > col; x--) {
+                if (board[col][row].getVal() == board[x][row].getVal() &&  board[col][row].getVal() == board[x-1][row].getVal()) {
+                    board[x][row].setVal(board[x][row].getVal() * 2);
+                    board[col][row].setVal(0);
+
                 }
             }
 
         }
     }
-    public void mergeVertical(int row, boolean down) {
+    public void mergeVertical(int row, int col, boolean down) {
         if (down) {
-            for (int y = 0; y < 3; y++) {
-                if (board[row][y].getVal() == board[row][y+1].getVal()) {
-                    board[row][y+1].setVal(board[row][y].getVal() * 2);
-                    board[row][y].setVal(0);
+            for (int y = 3; y > col; y--) {
+                if (board[row][col].getVal() == board[row][y].getVal() && board[row][col].getVal() == board[row][y-1].getVal()) {
+                    board[row][y].setVal(board[row][col].getVal() * 2);
+                    board[row][col].setVal(0);
                 }
             }
         } else {
-            for (int y = 0; y < 3; y++) {
-                if (board[row][y].getVal() == board[row][y+1].getVal()) {
-                    board[row][y].setVal(board[row][y].getVal() * 2);
-                    board[row][y+1].setVal(0);
+            for (int y = 0; y < col; y++) {
+                if (board[row][col].getVal() == board[row][y].getVal() && board[row][col].getVal() == board[row][y+1].getVal()) {
+                    board[row][y].setVal(board[row][col].getVal() * 2);
+                    board[row][col].setVal(0);
                 }
             }
 
         }
     }
+
     public void moveUp() {
         boolean moved = false;
 
         for (int x = 0; x < 4; x++){
             boolean combined = false;
-            for (int y = 3; y > 0; y--){
+            for (int y = 1; y <= 3; y++){
 
                 if (board[x][y].getVal()!=0 && board[x][y-1].getVal()==0){  //Nicht 0, y-Nachbar 0
                     board[x][y-1].setVal(board[x][y].getVal());
                     board[x][y].setVal(0);
-                    y=4;
+                    y=0;
                     moved=true;
                 }
                 else if((!combined) && board[x][y].getVal()!=0 && board[x][y-1].getVal() == board[x][y].getVal()){  //Nicht 0, y-Nachbar gleich aktuelles Tile
-                    mergeVertical(x, false);
+                    mergeVertical(x, y, false);
+                    y=0;
                     moved = true;
                     combined = true;
                 }
@@ -145,7 +152,8 @@ public class Game extends Application {
                     moved=true;
                 }
                 else if((!combined) && board[x][y].getVal()!=0 && board[x][y+1].getVal() == board[x][y].getVal()){  //Nicht 0, y-Nachbar gleich aktuelles Tile
-                    mergeVertical(x, true);
+                    mergeVertical(x, y, true);
+                    y=3;
                     moved = true;
                     combined = true;
                 }
@@ -176,7 +184,7 @@ public class Game extends Application {
                     moved=true;
                 }
                 else if((!combined) && board[x][y].getVal()!=0 && board[x-1][y].getVal() == board[x][y].getVal()){  //Nicht 0, y-Nachbar gleich aktuelles Tile
-                    mergeHorizontal(y, true);
+                    mergeHorizontal(x,y, true);
                     moved = true;
                     combined = true;
                 }
@@ -201,7 +209,8 @@ public class Game extends Application {
                     moved=true;
                 }
                 else if((!combined) && board[x][y].getVal()!=0 && board[x+1][y].getVal() == board[x][y].getVal()){  //Nicht 0, y-Nachbar gleich aktuelles Tile
-                    mergeHorizontal(y, false);
+                    mergeHorizontal(x, y, false);
+
                     moved = true;
                     combined = true;
                 }
