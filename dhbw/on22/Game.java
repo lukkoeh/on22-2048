@@ -31,8 +31,8 @@ public class Game extends Application {
             }
         }
 
-        randomTile(true);
-        randomTile(true);
+        randomTile();
+        randomTile();
 
 
         updateGuiTiles();
@@ -128,7 +128,7 @@ public class Game extends Application {
 
         }
         if(moved){
-            randomTile(false);
+            randomTile();
         }
 
         updateGuiTiles();
@@ -159,7 +159,7 @@ public class Game extends Application {
 
         }
         if(moved){
-            randomTile(false);
+            randomTile();
         }
 
         updateGuiTiles();
@@ -189,7 +189,7 @@ public class Game extends Application {
             }
         }
         if(moved){
-            randomTile(false);
+            randomTile();
         }
         updateGuiTiles();
     }
@@ -215,7 +215,7 @@ public class Game extends Application {
             }
         }
         if(moved){
-            randomTile(false);
+            randomTile();
         }
         updateGuiTiles();
     }
@@ -224,7 +224,7 @@ public class Game extends Application {
         lbl.setText("SCORE: " + score);
     }
 
-    public void randomTile(boolean initial){
+    public void randomTile(){
 
         Random r = new Random();
         int x = r.nextInt(4);
@@ -236,7 +236,7 @@ public class Game extends Application {
 
         }else{
 
-            randomTile(initial);
+            randomTile();
         }
     }
     public void updateGuiTiles() {
