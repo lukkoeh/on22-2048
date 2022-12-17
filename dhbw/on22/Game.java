@@ -182,6 +182,7 @@ public class Game extends Application {
                 }
                 else if((!combined) && board[x][y].getVal()!=0 && board[x-1][y].getVal() == board[x][y].getVal()){  //Nicht 0, y-Nachbar gleich aktuelles Tile
                     mergeHorizontal(x,y, true);
+                    x=0;
                     moved = true;
                     combined = true;
                 }
@@ -207,7 +208,7 @@ public class Game extends Application {
                 }
                 else if((!combined) && board[x][y].getVal()!=0 && board[x+1][y].getVal() == board[x][y].getVal()){  //Nicht 0, y-Nachbar gleich aktuelles Tile
                     mergeHorizontal(x, y, false);
-
+                    x=-1;
                     moved = true;
                     combined = true;
                 }
