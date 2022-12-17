@@ -231,11 +231,9 @@ public class Game extends Application {
         int y = r.nextInt(4);
 
         if (board[x][y].getVal() == 0 ){
-            if(initial) {
-                board[x][y].setVal(2);
-            }else{
-                board[x][y].setVal((r.nextInt(1) + 1) * 2);
-            }
+
+                board[x][y].setVal((r.nextInt(2) + 1) * 2);
+
         }else{
 
             randomTile(initial);
