@@ -1,13 +1,15 @@
 package dhbw.on22;
 import javafx.scene.paint.Color;
+import java.util.HashMap;
 public class Tile {
     int val;
     Color tileClr;
 
-    public Tile(){
-        val=0;
+    public Tile() {
+        val = 0;
     }
-    public Tile(int num){
+
+    public Tile(int num) {
         val = num;
     }
 
@@ -24,37 +26,33 @@ public class Tile {
     }
 
     public void setTileClr(int tileVal) {
-        tileClr = Color.hsb(calcHue(tileVal), calcSat(tileVal), calcLight(tileVal));
+        HashMap<Integer, Color> colors = new HashMap<Integer, Color>();
+        colors.put(0, Color.rgb(37, 37, 37));
+        colors.put(2, Color.rgb(255, 255, 255));
+        colors.put(4, Color.rgb(234, 194, 162));
+        colors.put(8, Color.rgb(235, 150, 75));
+        colors.put(16, Color.rgb(230, 136, 69));
+        colors.put(32, Color.rgb(255, 118, 77));
+        colors.put(64, Color.rgb(255, 65, 51));
+        colors.put(128, Color.rgb(255, 227, 89));
+        colors.put(256, Color.rgb(237, 205, 76));
+        colors.put(512, Color.rgb(230, 195, 67));
+        colors.put(1024, Color.rgb(224, 185, 56));
+        colors.put(2048, Color.rgb(217, 165, 22));
+
+        tileClr = colors.get(tileVal);
+
     }
 
-    public Color getColor(){
+    public Color getColor() {
         this.setTileClr(this.val);
         return tileClr;
     }
 
 
-    public String toString(){
+    public String toString() {
         return Integer.toString(val);
     }
 
-    int calcHue(int value){
-        double hueModifier = Math.sqrt(value)*1.5;
-        if (value < 64)
-            return round(hueModifier);
-        else
-            return round(48-hueModifier);
-    }
 
-    float calcSat(int value){
-        float satModifier = value/10.24f;
-        return satModifier/100;
-    }
-
-    float calcLight(int value){
-        float lightModifier = value/25.6f;
-        return 1-(lightModifier/100);
-    }
-    int round(double value){
-        return (int) ((value * 100 + 0.5)/100);
-    }
 }
