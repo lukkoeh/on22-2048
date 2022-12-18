@@ -45,14 +45,17 @@ public class Game extends Application {
             else if (e.getCode() == KeyCode.A) {
 
                 moveLeft();
+
             }
             else if (e.getCode() == KeyCode.S) {
 
                 moveDown();
+
             }
             else if (e.getCode() == KeyCode.D) {
 
                 moveRight();
+
             }
         });
         primaryStage.setScene(mainscene);
@@ -135,7 +138,7 @@ public class Game extends Application {
 
         updateGuiTiles();
         checkWin();
-
+        checkLoose();
     }
 
     public void moveDown(){
@@ -169,6 +172,7 @@ public class Game extends Application {
 
         updateGuiTiles();
         checkWin();
+        checkLoose();
     }
 
 
@@ -201,6 +205,7 @@ public class Game extends Application {
         }
         updateGuiTiles();
         checkWin();
+        checkLoose();
     }
     public void moveRight(){
         boolean moved = false;
@@ -230,6 +235,7 @@ public class Game extends Application {
         }
         updateGuiTiles();
         checkWin();
+        checkLoose();
     }
     public void updateScore() {
         Label lbl = (Label) root.lookup("#score");
@@ -310,5 +316,40 @@ public class Game extends Application {
                 }
             }
         }
+     }
+
+     public void checkLoose() {
+        boolean combineable = false;
+       if (isFull()) {
+           for(int x = 0;x < 4;x++) {
+               for (int y = 0; y < 3; y++) {
+                   if (board[x][y].getVal() == board[x][y+1].getVal() && y <= 2) {
+                       combineable =true;
+                   }
+               }
+           }
+           for(int y = 0;y < 4;y++) {
+               for (int x = 0; x < 3; x++) {
+                   if (board[x][y].getVal() == board[x+1][y].getVal() && x <= 2) {
+                       combineable =true;
+                   }
+               }
+           }
+           if (!combineable) {
+               showDialog(false);
+           }
+       }
+     }
+
+     public boolean isFull() {
+        boolean full = true;
+         for(int x = 0;x < 4;x++) {
+             for (int y = 0; y < 4; y++) {
+                 if (board[x][y].getVal() == 0) {
+                     full = false;
+                 }
+             }
+         }
+         return full;
      }
 }
