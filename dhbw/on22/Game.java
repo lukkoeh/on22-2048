@@ -1,9 +1,13 @@
 package dhbw.on22;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
@@ -31,11 +35,8 @@ public class Game extends Application {
             }
         }
 
-        randomTile();
-        randomTile();
+        restartGame();
 
-
-        updateGuiTiles();
         mainscene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.W) {
 
@@ -249,4 +250,42 @@ public class Game extends Application {
             }
         }
     }
+
+    public void clearTiles() {
+        for (int x=0; x<4; x++) {
+            for (int y=0; y<4; y++) {
+                board[x][y].setVal(0);
+            }
+        }
+    }
+
+    public void restartGame() {
+        clearTiles();
+        randomTile();
+        randomTile();
+        updateGuiTiles();
+    }
+
+     public void showDialog(boolean won) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        if (won) {
+            alert.setTitle("GEWONNEN");
+            alert.setHeaderText("Du hast gewonnen, willst du erneut spielen?");
+        } else {
+            alert.setTitle("VERLOREN");
+            alert.setHeaderText("Du hast verloren, willst du es nochmal versuchen?");
+        }
+         ButtonType btyes = new ButtonType("Ja");
+         ButtonType btno = new ButtonType("Nein");
+
+         alert.getButtonTypes().setAll(btyes, btno);
+
+         Optional<ButtonType> result = alert.showAndWait();
+
+         if (result.get() == btyes) {
+                restartGame();
+         } else {
+             Platform.exit();
+         }
+     }
 }
