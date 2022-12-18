@@ -19,9 +19,8 @@ import java.util.*;
 public class Game extends Application {
 
     private Parent root;
+    private static int score = 0;
     Tile[][] board = new Tile[4][4];
-
-    int score = 0;
     @Override
     public void start(Stage primaryStage) throws IOException {
         primaryStage.setTitle("2048 Game");
@@ -46,14 +45,17 @@ public class Game extends Application {
             else if (e.getCode() == KeyCode.A) {
 
                 moveLeft();
+
             }
             else if (e.getCode() == KeyCode.S) {
 
                 moveDown();
+
             }
             else if (e.getCode() == KeyCode.D) {
 
                 moveRight();
+
             }
         });
         primaryStage.setScene(mainscene);
@@ -120,6 +122,8 @@ public class Game extends Application {
                 }
                 else if((!combined) && board[x][y].getVal()!=0 && board[x][y-1].getVal() == board[x][y].getVal()){  //Nicht 0, y-Nachbar gleich aktuelles Tile
                     mergeVertical(x, y, false);
+                    score += board[x][y-1].getVal();
+                    updateScore();
                     y=0;
                     moved = true;
                     combined = true;
@@ -133,7 +137,8 @@ public class Game extends Application {
         }
 
         updateGuiTiles();
-
+        checkWin();
+        checkLoose();
     }
 
     public void moveDown(){
@@ -151,6 +156,8 @@ public class Game extends Application {
                 }
                 else if((!combined) && board[x][y].getVal()!=0 && board[x][y+1].getVal() == board[x][y].getVal()){  //Nicht 0, y-Nachbar gleich aktuelles Tile
                     mergeVertical(x, y, true);
+                    score += board[x][y+1].getVal();
+                    updateScore();
                     y=3;
                     moved = true;
                     combined = true;
@@ -164,6 +171,8 @@ public class Game extends Application {
         }
 
         updateGuiTiles();
+        checkWin();
+        checkLoose();
     }
 
 
@@ -183,6 +192,8 @@ public class Game extends Application {
                 }
                 else if((!combined) && board[x][y].getVal()!=0 && board[x-1][y].getVal() == board[x][y].getVal()){  //Nicht 0, y-Nachbar gleich aktuelles Tile
                     mergeHorizontal(x,y, true);
+                    score += board[x-1][y].getVal();
+                    updateScore();
                     x=0;
                     moved = true;
                     combined = true;
@@ -193,6 +204,8 @@ public class Game extends Application {
             randomTile();
         }
         updateGuiTiles();
+        checkWin();
+        checkLoose();
     }
     public void moveRight(){
         boolean moved = false;
@@ -209,6 +222,8 @@ public class Game extends Application {
                 }
                 else if((!combined) && board[x][y].getVal()!=0 && board[x+1][y].getVal() == board[x][y].getVal()){  //Nicht 0, y-Nachbar gleich aktuelles Tile
                     mergeHorizontal(x, y, false);
+                    score += board[x+1][y].getVal();
+                    updateScore();
                     x=-1;
                     moved = true;
                     combined = true;
@@ -219,8 +234,10 @@ public class Game extends Application {
             randomTile();
         }
         updateGuiTiles();
+        checkWin();
+        checkLoose();
     }
-    public void updateScore(int score) {
+    public void updateScore() {
         Label lbl = (Label) root.lookup("#score");
         lbl.setText("SCORE: " + score);
     }
@@ -263,6 +280,8 @@ public class Game extends Application {
         clearTiles();
         randomTile();
         randomTile();
+        score = 0;
+        updateScore();
         updateGuiTiles();
     }
 
@@ -287,5 +306,50 @@ public class Game extends Application {
          } else {
              Platform.exit();
          }
+     }
+
+     public void checkWin() {
+        for(int x = 0;x < 4;x++) {
+            for(int y = 0;y < 4;y++) {
+                if (board[x][y].getVal() == 2048) {
+                    showDialog(true);
+                }
+            }
+        }
+     }
+
+     public void checkLoose() {
+        boolean combineable = false;
+       if (isFull()) {
+           for(int x = 0;x < 4;x++) {
+               for (int y = 0; y < 3; y++) {
+                   if (board[x][y].getVal() == board[x][y+1].getVal() && y <= 2) {
+                       combineable =true;
+                   }
+               }
+           }
+           for(int y = 0;y < 4;y++) {
+               for (int x = 0; x < 3; x++) {
+                   if (board[x][y].getVal() == board[x+1][y].getVal() && x <= 2) {
+                       combineable =true;
+                   }
+               }
+           }
+           if (!combineable) {
+               showDialog(false);
+           }
+       }
+     }
+
+     public boolean isFull() {
+        boolean full = true;
+         for(int x = 0;x < 4;x++) {
+             for (int y = 0; y < 4; y++) {
+                 if (board[x][y].getVal() == 0) {
+                     full = false;
+                 }
+             }
+         }
+         return full;
      }
 }
