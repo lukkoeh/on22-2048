@@ -119,6 +119,8 @@ public class Game extends Application {
                 }
                 else if((!combined) && board[x][y].getVal()!=0 && board[x][y-1].getVal() == board[x][y].getVal()){  //Nicht 0, y-Nachbar gleich aktuelles Tile
                     mergeVertical(x, y, false);
+                    score += board[x][y-1].getVal();
+                    updateScore();
                     y=0;
                     moved = true;
                     combined = true;
@@ -151,6 +153,8 @@ public class Game extends Application {
                 }
                 else if((!combined) && board[x][y].getVal()!=0 && board[x][y+1].getVal() == board[x][y].getVal()){  //Nicht 0, y-Nachbar gleich aktuelles Tile
                     mergeVertical(x, y, true);
+                    score += board[x][y+1].getVal();
+                    updateScore();
                     y=3;
                     moved = true;
                     combined = true;
@@ -184,6 +188,8 @@ public class Game extends Application {
                 }
                 else if((!combined) && board[x][y].getVal()!=0 && board[x-1][y].getVal() == board[x][y].getVal()){  //Nicht 0, y-Nachbar gleich aktuelles Tile
                     mergeHorizontal(x,y, true);
+                    score += board[x-1][y].getVal();
+                    updateScore();
                     x=0;
                     moved = true;
                     combined = true;
@@ -211,6 +217,8 @@ public class Game extends Application {
                 }
                 else if((!combined) && board[x][y].getVal()!=0 && board[x+1][y].getVal() == board[x][y].getVal()){  //Nicht 0, y-Nachbar gleich aktuelles Tile
                     mergeHorizontal(x, y, false);
+                    score += board[x+1][y].getVal();
+                    updateScore();
                     x=-1;
                     moved = true;
                     combined = true;
