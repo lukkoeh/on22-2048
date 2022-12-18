@@ -132,6 +132,7 @@ public class Game extends Application {
         }
 
         updateGuiTiles();
+        checkWin();
 
     }
 
@@ -163,6 +164,7 @@ public class Game extends Application {
         }
 
         updateGuiTiles();
+        checkWin();
     }
 
 
@@ -192,6 +194,7 @@ public class Game extends Application {
             randomTile();
         }
         updateGuiTiles();
+        checkWin();
     }
     public void moveRight(){
         boolean moved = false;
@@ -218,6 +221,7 @@ public class Game extends Application {
             randomTile();
         }
         updateGuiTiles();
+        checkWin();
     }
     public void updateScore() {
         Label lbl = (Label) root.lookup("#score");
@@ -288,5 +292,15 @@ public class Game extends Application {
          } else {
              Platform.exit();
          }
+     }
+
+     public void checkWin() {
+        for(int x = 0;x < 4;x++) {
+            for(int y = 0;y < 4;y++) {
+                if (board[x][y].getVal() == 2048) {
+                    showDialog(true);
+                }
+            }
+        }
      }
 }
