@@ -19,9 +19,8 @@ import java.util.*;
 public class Game extends Application {
 
     private Parent root;
+    private static int score = 0;
     Tile[][] board = new Tile[4][4];
-
-    int score = 0;
     @Override
     public void start(Stage primaryStage) throws IOException {
         primaryStage.setTitle("2048 Game");
@@ -220,7 +219,7 @@ public class Game extends Application {
         }
         updateGuiTiles();
     }
-    public void updateScore(int score) {
+    public void updateScore() {
         Label lbl = (Label) root.lookup("#score");
         lbl.setText("SCORE: " + score);
     }
@@ -263,6 +262,8 @@ public class Game extends Application {
         clearTiles();
         randomTile();
         randomTile();
+        score = 0;
+        updateScore();
         updateGuiTiles();
     }
 
