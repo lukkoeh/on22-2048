@@ -31,11 +31,8 @@ public class Game extends Application {
             }
         }
 
-        randomTile();
-        randomTile();
+        restartGame();
 
-
-        updateGuiTiles();
         mainscene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.W) {
 
@@ -248,5 +245,20 @@ public class Game extends Application {
 
             }
         }
+    }
+
+    public void clearTiles() {
+        for (int x=0; x<4; x++) {
+            for (int y=0; y<4; y++) {
+                board[x][y].setVal(0);
+            }
+        }
+    }
+
+    public void restartGame() {
+        clearTiles();
+        randomTile();
+        randomTile();
+        updateGuiTiles();
     }
 }
