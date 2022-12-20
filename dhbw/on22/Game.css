@@ -4,13 +4,15 @@
     -fx-pref-width: 110;
     -fx-pref-height: 110;
     -fx-alignment: center;
-    -fx-font-family: "Helvetica Neue";
+    -fx-font-family: "Arial";
     -fx-font-weight: 700;
     -fx-font-size: 20;
 }
 
 #score {
     -fx-background-color: transparent;
-    -fx-alignment: left;
-    -fx-pref-height: 50;
+    -fx-pref-height: 100;
+    -fx-pref-width: 500;
+    -fx-font-weight: 700;
+    -fx-font-size: 20;
 }
