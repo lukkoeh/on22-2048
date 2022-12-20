@@ -4,29 +4,10 @@ import java.util.HashMap;
 public class Tile {
     int val;
     Color tileClr;
-
+    static HashMap<Integer, Color> colors = new HashMap<Integer, Color>();
     public Tile() {
         val = 0;
-    }
 
-    public Tile(int num) {
-        val = num;
-    }
-
-    public int getVal() {
-        return val;
-    }
-
-    public void setVal(int val) {
-        this.val = val;
-    }
-
-    public Color getTileClr() {
-        return tileClr;
-    }
-
-    public void setTileClr(int tileVal) {
-        HashMap<Integer, Color> colors = new HashMap<Integer, Color>();
         colors.put(0, Color.rgb(37, 37, 37));
         colors.put(2, Color.rgb(255, 255, 255));
         colors.put(4, Color.rgb(234, 194, 162));
@@ -39,6 +20,19 @@ public class Tile {
         colors.put(512, Color.rgb(230, 195, 67));
         colors.put(1024, Color.rgb(224, 185, 56));
         colors.put(2048, Color.rgb(217, 165, 22));
+    }
+
+    public int getVal() {
+        return val;
+    }
+
+    public void setVal(int val) {
+        this.val = val;
+    }
+
+
+
+    public void setTileClr(int tileVal) {
 
         tileClr = colors.get(tileVal);
 
@@ -49,10 +43,6 @@ public class Tile {
         return tileClr;
     }
 
-
-    public String toString() {
-        return Integer.toString(val);
-    }
-
-
 }
+
+
