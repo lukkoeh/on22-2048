@@ -36,6 +36,19 @@ public class Game extends Application {
 
         restartGame();
 
+        mainscene.setOnSwipeRight(e->{
+            moveRight();
+        });
+        mainscene.setOnSwipeLeft(e->{
+            moveLeft();
+        });
+        mainscene.setOnSwipeUp(e->{
+            moveUp();
+        });
+        mainscene.setOnSwipeDown(e->{
+            moveDown();
+        });
+
         mainscene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.W) {
 
