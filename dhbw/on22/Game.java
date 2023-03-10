@@ -6,7 +6,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
@@ -35,6 +34,19 @@ public class Game extends Application {
         }
 
         restartGame();
+
+        mainscene.setOnSwipeDown(e -> {
+            moveDown();
+        });
+        mainscene.setOnSwipeUp(e -> {
+            moveUp();
+        });
+        mainscene.setOnSwipeLeft(e -> {
+            moveLeft();
+        });
+        mainscene.setOnSwipeRight(e -> {
+            moveRight();
+        });
 
         mainscene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.W) {
